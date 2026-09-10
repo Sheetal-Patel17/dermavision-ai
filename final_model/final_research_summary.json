@@ -1,0 +1,63 @@
+{
+    "selected_model": "Oversampled_YOLO26M_CLS",
+    "architecture": "YOLO26M-CLS",
+    "dataset": "HAM10000",
+    "classes": [
+        "akiec",
+        "bcc",
+        "bkl",
+        "df",
+        "mel",
+        "nv",
+        "vasc"
+    ],
+    "split_strategy": "Lesion-aware Train/Validation/Test split",
+    "split_counts": {
+        "train_original": 6981,
+        "train_oversampled": 10683,
+        "validation": 1532,
+        "test": 1502
+    },
+    "training_configuration": {
+        "image_size": 224,
+        "batch_size": 32,
+        "maximum_epochs": 100,
+        "patience": 20,
+        "optimizer": "AdamW",
+        "initial_lr": 0.001,
+        "weight_decay": 0.0005,
+        "scheduler": "Cosine",
+        "amp": true,
+        "seed": 42
+    },
+    "baseline_results": {
+        "accuracy": 0.8176,
+        "balanced_accuracy": 0.6782,
+        "macro_f1": 0.6914,
+        "macro_roc_auc": 0.9593,
+        "melanoma_recall": 0.4311
+    },
+    "oversampled_results": {
+        "accuracy": 0.8316,
+        "balanced_accuracy": 0.6898,
+        "macro_f1": 0.7177,
+        "macro_roc_auc": 0.9633,
+        "melanoma_recall": 0.491
+    },
+    "main_improvements_percentage_points": {
+        "accuracy": 1.4,
+        "balanced_accuracy": 1.16,
+        "macro_f1": 2.62,
+        "melanoma_recall": 5.99
+    },
+    "main_limitation": "Melanoma remains the hardest class, with substantial melanoma-to-nevus confusion.",
+    "melanoma_error_analysis": {
+        "total_melanoma_test_images": 167,
+        "correct_melanoma": 82,
+        "missed_melanoma": 85,
+        "melanoma_to_nevus": 65,
+        "melanoma_to_nevus_percentage": 38.92,
+        "mean_wrong_nevus_confidence": 0.8813,
+        "mean_true_melanoma_probability": 0.1024
+    }
+}

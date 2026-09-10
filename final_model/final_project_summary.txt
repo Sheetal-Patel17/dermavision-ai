@@ -1,0 +1,61 @@
+
+HAM10000 YOLO26M-CLS FINAL PROJECT SUMMARY
+==========================================
+
+Selected Final Model:
+Oversampled_YOLO26M_CLS
+
+Architecture:
+YOLO26M-CLS
+
+Dataset:
+HAM10000
+
+Dataset Split:
+Train Original   : 6981
+Train Oversampled: 10683
+Validation       : 1532
+Test             : 1502
+
+Split Strategy:
+Lesion-aware split to prevent lesion-level data leakage.
+
+BASELINE TEST RESULTS
+---------------------
+Accuracy          : 81.76%
+Balanced Accuracy : 67.82%
+Macro F1          : 69.14%
+Macro ROC-AUC     : 95.93%
+Melanoma Recall   : 43.11%
+
+OVERSAMPLED TEST RESULTS
+------------------------
+Accuracy          : 83.16%
+Balanced Accuracy : 68.98%
+Macro F1          : 71.77%
+Macro ROC-AUC     : 96.33%
+Melanoma Recall   : 49.10%
+
+IMPROVEMENTS
+------------
+Accuracy          : +1.40 percentage points
+Balanced Accuracy : +1.16 percentage points
+Macro F1          : +2.62 percentage points
+Melanoma Recall   : +5.99 percentage points
+
+MAIN LIMITATION
+---------------
+Melanoma remains the most difficult class.
+
+Total melanoma test samples : 167
+Correct melanoma            : 82
+Missed melanoma             : 85
+Melanoma predicted as NV    : 65
+MEL -> NV rate              : 38.92%
+
+Mean wrong NV confidence    : 0.8813
+Mean true MEL probability   : 0.1024
+
+FINAL MODEL
+-----------
+/workspace/damodar/mahek_sheetal/final_model/YOLO26M_HAM10000_FINAL_best.pt

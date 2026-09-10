@@ -1,0 +1,17 @@
+Parameter,Value
+Architecture,YOLO26M-CLS
+Pretrained Weights,ImageNet pretrained
+Image Size,224 × 224
+Batch Size,32
+Maximum Epochs,100
+Early Stopping Patience,20
+Optimizer,AdamW
+Initial Learning Rate,0.001
+Weight Decay,0.0005
+LR Scheduler,Cosine
+AMP,True
+Split Strategy,Lesion-aware 70/15/15
+Baseline Train Images,6981
+Oversampled Train Images,10683
+Validation Images,1532
+Test Images,1502

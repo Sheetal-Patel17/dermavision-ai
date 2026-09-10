@@ -1,0 +1,8 @@
+true_class,Total,Correct,Errors,Error_Rate_%
+mel,167,82,85,50.9
+df,20,12,8,40.0
+bkl,167,103,64,38.32
+vasc,21,15,6,28.57
+akiec,52,38,14,26.92
+bcc,71,52,19,26.76
+nv,1004,947,57,5.68

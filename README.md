@@ -1,235 +1,162 @@
-# DermaVision AI
+# 🩺 DermaVision AI
 
-AI-assisted dermoscopic skin lesion classification using YOLO26M-CLS trained on the HAM10000 dataset.
+**AI-assisted skin lesion classification using YOLO26M-CLS and the HAM10000 dataset.**
 
-> **Research prototype.** This project is an academic AI system developed for research and educational purposes. It is not a medical diagnostic device and must not be used as a substitute for clinical evaluation by a qualified healthcare professional.
+DermaVision AI is an academic research prototype that analyzes dermoscopic skin lesion images and predicts one of **seven diagnostic classes** using a trained deep-learning model.
 
----
-
-## Overview
-
-DermaVision AI classifies dermoscopic images of skin lesions across seven diagnostic categories from the HAM10000 benchmark dataset. The system is built on a YOLO26M-CLS architecture, trained with a lesion-aware data split and moderate class oversampling to partially address the severe class imbalance present in the dataset.
-
-The inference pipeline is deployed as an interactive Streamlit web application. Users upload a dermoscopic image and receive the predicted lesion class, model confidence, a full probability distribution across all seven classes, and Top-3 ranked predictions.
+> ⚠️ **Research Prototype:** This application is for academic and educational purposes only. It is not a medical diagnostic device and should not replace professional medical evaluation.
 
 ---
 
-## Problem Statement
+## 🚀 Live Demo
 
-HAM10000 contains 10,015 dermoscopic images spanning seven lesion types with a strongly imbalanced distribution. Melanocytic nevi (nv) account for approximately 67% of all images, while rare classes such as dermatofibroma and vascular lesions represent less than 2% each. This imbalance causes standard classifiers to under-perform on minority classes, particularly on melanoma — the most clinically important category — which shares significant visual features with benign nevi.
-
-The primary modelling challenge is melanoma-to-nevus confusion: the visual similarity between early-stage melanoma and benign moles means even human experts require dermoscopy and histopathology for reliable discrimination.
+**Streamlit App:**
+https://dermavision-ai-8la8tdzsxtjvaaewstjzsj.streamlit.app/
 
 ---
 
-## Dataset
+## 📸 Application Screenshots
 
-**Source:** HAM10000 — Human Against Machine with 10000 training images  
-**Total images:** 10,015  
-**Input resolution:** 224 × 224 pixels
+<img width="1917" height="870" alt="Screenshot 2026-09-10 202557" src="https://github.com/user-attachments/assets/fbb52fce-cc0f-49d0-bb45-7350039870d6" />
+
+### Skin Lesion Assessment
+
+<img width="1917" height="865" alt="Screenshot 2026-09-10 202703" src="https://github.com/user-attachments/assets/526195ec-4609-4dad-91a4-fde87c16d027" />
+
+### Prediction Result
+
+<img width="1917" height="867" alt="Screenshot 2026-09-10 202716" src="https://github.com/user-attachments/assets/02dce917-887a-4621-a2ae-37f607cc9bac" />
+<img width="1917" height="860" alt="Screenshot 2026-09-10 202726" src="https://github.com/user-attachments/assets/21575ccc-910c-4c61-b4e2-5aaf358445ea" />
+
+### Report Generation
+
+<img width="1917" height="922" alt="Screenshot 2026-09-10 202806" src="https://github.com/user-attachments/assets/10e4b226-ad53-45c7-871d-26a4fcf470aa" />
+
+
+## ⚙️ How It Works
+
+1. **Open the application**
+   The home page displays model information, architectures, and performance metrics.
+
+2. **Upload an image**
+   Go to **Skin Lesion Assessment** and upload a dermoscopic skin lesion image.
+
+3. **AI Classification**
+   The YOLO26M-CLS model processes the image and predicts the most likely class.
+
+4. **View Results**
+   The prediction report displays the predicted class, confidence score, probability distribution, and Top-3 predictions.
+
+5. **View Research Results**
+   Users can scroll down to see model and dataset information, including input resolution, split strategy, imbalance strategy, and evaluation metrics.
+
+---
+
+## 🧠 Model & Dataset
+
+| Item                  | Details                                    |
+| --------------------- | ------------------------------------------ |
+| **Model**             | YOLO26M-CLS                                |
+| **Dataset**           | HAM10000                                   |
+| **Classes**           | 7                                          |
+| **Input Resolution**  | 224 × 224                                  |
+| **Training Strategy** | Lesion-aware split + moderate oversampling |
+| **Best Model**        | Oversampled YOLO26M-CLS                    |
 
 ### Diagnostic Classes
 
-| Code | Condition |
-|------|-----------|
-| `akiec` | Actinic Keratoses / Intraepithelial Carcinoma (Bowen's Disease) |
-| `bcc` | Basal Cell Carcinoma |
-| `bkl` | Benign Keratosis-like Lesions (Seborrheic Keratoses) |
-| `df` | Dermatofibroma |
-| `mel` | Melanoma |
-| `nv` | Melanocytic Nevus |
-| `vasc` | Vascular Lesions |
-
-### Split Strategy
-
-| Split | Images |
-|-------|-------:|
-| Train (original) | 6,981 |
-| Train (oversampled) | 10,683 |
-| Validation | 1,532 |
-| Test | 1,502 |
-
-A **lesion-aware split** was applied to ensure that images originating from the same physical lesion remain within a single partition. This prevents data leakage between train, validation, and test sets — a critical requirement given that HAM10000 contains multiple images per lesion.
-
-Moderate oversampling was applied to the training set only to partially compensate for class imbalance without introducing excessive synthetic duplication.
+* Actinic Keratoses / Bowen's Disease (`akiec`)
+* Basal Cell Carcinoma (`bcc`)
+* Benign Keratosis-like Lesions (`bkl`)
+* Dermatofibroma (`df`)
+* Melanoma (`mel`)
+* Melanocytic Nevus (`nv`)
+* Vascular Lesions (`vasc`)
 
 ---
 
-## Model
+## 📊 Test Performance
 
-**Architecture:** YOLO26M-CLS (YOLO26 medium classification variant)  
-**Input size:** 224 × 224  
-**Classes:** 7  
-**Best configuration:** Oversampled_YOLO26M_CLS
+Results on the held-out test set:
 
-### Training Configuration
-
-| Hyperparameter | Value |
-|----------------|-------|
-| Pretrained weights | ImageNet |
-| Optimizer | AdamW |
-| Learning rate | 0.001 |
-| Weight decay | 0.0005 |
-| Max epochs | 100 |
-| Early stopping patience | 20 |
-| Batch size | 32 |
-| LR schedule | Cosine annealing |
-| Mixed precision (AMP) | Enabled |
+| Metric                |      Score |
+| --------------------- | ---------: |
+| **Test Accuracy**     | **83.16%** |
+| **Balanced Accuracy** | **68.98%** |
+| **Macro F1 Score**    | **71.77%** |
+| **Macro ROC AUC**     | **96.33%** |
+| **Melanoma Recall**   | **49.10%** |
 
 ---
 
-## Experimental Results
+## 🛠️ Technologies
 
-Results on the held-out test set (1,502 images):
-
-| Metric | Baseline | Oversampled |
-|--------|--------:|------------:|
-| Accuracy | 81.76% | **83.16%** |
-| Balanced Accuracy | 67.82% | **68.98%** |
-| Macro F1-score | 69.14% | **71.77%** |
-| Macro ROC-AUC | 95.93% | **96.33%** |
-| Melanoma Recall | 43.11% | **49.10%** |
-
-Moderate oversampling improved performance across all metrics:
-
-- Accuracy: **+1.40 pp**
-- Balanced Accuracy: **+1.16 pp**
-- Macro F1: **+2.63 pp**
-- Melanoma Recall: **+5.99 pp**
-
-The improvement in melanoma recall is particularly notable given the clinical importance of that class.
+* **Python**
+* **Streamlit**
+* **Ultralytics YOLO**
+* **PyTorch**
+* **Pillow**
+* **OpenCV**
+* **NumPy**
+* **Pandas**
+* **Altair**
 
 ---
 
-## Error Analysis
+## 📁 Project Structure
 
-| Metric | Value |
-|--------|------:|
-| Total test images | 1,502 |
-| Correctly classified | 1,249 |
-| Misclassified | 253 |
-| Overall accuracy | 83.16% |
-| Melanoma test images | 167 |
-| Melanoma correctly classified | 82 |
-| Melanoma missed | 85 |
-| Melanoma predicted as nevus | 65 |
-| Mel → Nv confusion rate | 38.92% |
-| Mean confidence (wrong nv prediction) | 0.8813 |
-
-**Primary limitation:** Melanoma-to-nevus confusion. Of the 85 missed melanoma cases, 65 (76.5%) were misclassified as melanocytic nevus, often with high model confidence (mean: 0.8813). This reflects the genuine visual similarity between these two classes under dermoscopy and underscores why this system must not be used as a clinical screening tool.
-
----
-
-## Streamlit Application
-
-The deployed application provides:
-
-- **Image upload** — JPG, JPEG, and PNG dermoscopic images
-- **Predicted class** — top-1 classification with full class name and HAM10000 code
-- **Confidence score** — model softmax probability for the predicted class
-- **Probability distribution** — horizontal bar chart across all seven diagnostic categories
-- **Top-3 predictions** — ranked by confidence
-- **Detailed table** — full probability breakdown for all classes (expandable)
-- **Research disclaimer** — visible at all times
-- **Model information** — architecture, dataset, and test metrics in the sidebar
-
----
-
-## Project Structure
-
-```
-DermaVision-AI/
-├── app.py                                  # Streamlit application
-├── requirements.txt                        # Python dependencies
-├── .gitignore                              # Repository exclusion rules
-├── README.md                               # This document
+```text
+dermavision-ai/
+│
+├── app.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+│
 └── final_model/
-    └── YOLO26M_HAM10000_FINAL_best.pt     # Trained model weights (19.93 MB)
+    └── YOLO26M_HAM10000_FINAL_best.pt
 ```
 
 ---
 
-## Installation
+## 💻 Run Locally
 
 ```bash
-git clone <repository-url>
-cd DermaVision-AI
+git clone https://github.com/Sheetal-Patel17/dermavision-ai.git
+cd dermavision-ai
 python -m pip install -r requirements.txt
-```
-
-Python 3.10 or 3.11 is recommended. A virtual environment is strongly advised.
-
----
-
-## Run Locally
-
-```bash
 python -m streamlit run app.py
 ```
 
-The application will open in your default browser at `http://localhost:8501`.
+The application will open at:
 
-The model is loaded once at startup using `@st.cache_resource`. Inference runs on GPU if CUDA is available, and falls back to CPU automatically.
-
----
-
-## Deployment
-
-This repository is structured for deployment on **Streamlit Community Cloud**:
-
-1. Fork or push this repository to GitHub
-2. Sign in at [share.streamlit.io](https://share.streamlit.io)
-3. Click **New app**
-4. Select this repository, branch `main`, and entrypoint `app.py`
-5. Click **Deploy**
-
-All dependencies are resolved from `requirements.txt`. The trained model file is included in the repository (19.93 MB — within GitHub's standard file limit).
+```text
+http://localhost:8501
+```
 
 ---
 
-## Technologies
+## ☁️ Deployment
 
-| Component | Library / Framework |
-|-----------|-------------------|
-| Application framework | Streamlit |
-| Model architecture | Ultralytics YOLO26 |
-| Deep learning backend | PyTorch |
-| Data handling | Pandas, NumPy |
-| Image processing | Pillow, OpenCV Headless |
-| Visualization | Altair |
-| Language | Python 3.10+ |
+The application is deployed using **Streamlit Community Cloud**.
+
+**Live App:**
+https://dermavision-ai-8la8tdzsxtjvaaewstjzsj.streamlit.app/
 
 ---
 
-## Research Limitations
+## ⚠️ Disclaimer
 
-This model has the following known limitations:
+DermaVision AI is an **academic research prototype**.
 
-- **Class imbalance:** Despite oversampling, the training distribution remains imbalanced. Minority-class performance (df, vasc, akiec) is lower than majority-class performance.
-- **Melanoma-nevus confusion:** Visual similarity between melanoma and benign nevi produces the highest error rate (mel → nv: 38.92%), often with high confidence. This is the critical failure mode.
-- **Dataset-specific generalization:** The model was trained and evaluated exclusively on HAM10000. Generalization to images from different scanners, clinical settings, or patient populations has not been evaluated.
-- **No external clinical validation:** Results are reported on the HAM10000 test split only. No prospective clinical study or external validation has been conducted.
-- **No multimodal features:** The model uses image pixels only. Clinical metadata (patient age, anatomical site, lesion history) is not incorporated.
-- **Research prototype:** This system has not undergone the regulatory review required for use as a medical device.
+The model predictions are not medical diagnoses and should not replace examination, dermoscopy, histopathology, or advice from a qualified healthcare professional.
 
 ---
 
-## Future Work
+## 👩‍💻 Author
 
-Research directions that could meaningfully improve the system:
+**Sheetal Patel**
+B.Tech Information Technology — Marwadi University
 
-- **Loss function:** Class-balanced cross-entropy or focal loss to further address minority-class under-representation
-- **Augmentation:** Melanoma-targeted augmentation strategies (colour jitter, dermoscopy-specific transforms) to improve melanoma recall
-- **Resolution:** Experiments at higher input resolution (384 × 384, 448 × 448) to capture finer lesion detail
-- **External validation:** Evaluation on independent datasets (ISIC 2019, ISIC 2020, Derm7pt) to assess real-world generalization
-- **Calibration:** Temperature scaling or Platt calibration to align confidence scores with actual accuracy
-- **Explainability:** Grad-CAM or SHAP visualization to understand which image regions drive predictions
-- **Multimodal fusion:** Integration of structured clinical metadata to reduce melanoma-nevus ambiguity
-
----
-
-## Disclaimer
-
-This project is an academic research prototype and is **not a medical diagnostic device**.
-
-Model predictions must not replace examination, dermoscopy assessment, histopathological diagnosis, or advice from a qualified healthcare professional. The system has not been validated for clinical use and carries no regulatory approval for diagnostic applications.
+**GitHub:** https://github.com/Sheetal-Patel17
+**LinkedIn:** https://linkedin.com/in/sheetal-patel17
